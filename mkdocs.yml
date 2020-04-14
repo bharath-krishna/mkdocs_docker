@@ -1,4 +1,0 @@
-site_name: TRI-AD challenge
-theme: readthedocs
-docs_dir: /mkdocs_project/docs
-site_dir: /mkdocs_project/site
