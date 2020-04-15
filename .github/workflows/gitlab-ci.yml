@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag mkdocs_image:$(date +%s)
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Test image build
+      run: docker run -it --rm -v ./:/shared_dir -p 8000:8000 mkdocs_image:$(date +%s) serve
+    - name: Test service
+      run: var="$(curl localhost:8000 2>/dev/null)" && if echo "$var" | grep 'Welcome to MkDocs'; then   echo "It works"; else fail; fi
