@@ -23,6 +23,6 @@ jobs:
 
     steps:
     - name: Test image build
-      run: docker run -it --rm -v ./:/shared_dir -p 8000:8000 mkdocs_image:$(date +%s) serve
+      run: docker run -d --rm -v ./:/shared_dir -p 8000:8000 mkdocs_image:$(date +%s) serve
     - name: Test service
       run: var="$(curl localhost:8000 2>/dev/null)" && if echo "$var" | grep 'Welcome to MkDocs'; then   echo "It works"; else fail; fi
