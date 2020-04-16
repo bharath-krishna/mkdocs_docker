@@ -2,21 +2,42 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ build_and_test ]
 
 jobs:
 
-  build_and_test:
-
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag mkdocs_image
-    - name: Test image
-      run: docker run --name mkdocs_container -d --rm -v $GITHUB_WORKSPACE/mkdocs_docker/:/shared_dir -p 8000:8000 mkdocs_image serve && var="$(curl localhost:8000 2>/dev/null)" && if echo "$var" | grep 'Welcome to MkDocs'; then   echo "It works"; else fail; fi
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    - name: Display the path and contents
+      run: |
+        echo $PATH
+        ls -lsa
+      shell: bash
+    steps:
+
     - name: list containers and images
-      run: docker images && docker ps -a
+      run: |
+        docker images
+        docker ps -a
+
+    services:
+      mkdocs:
+        image: mkdocs_image
+        ports:
+          - 8000:8000
+        volumes:
+        - $GITHUB_WORKSPACE/mkdocs_docker/:/shared_dir
+
+    # - name: Test image
+    #   run: |
+    #     docker run --name mkdocs_container -d --rm -v $GITHUB_WORKSPACE/mkdocs_docker/:/shared_dir -p 8000:8000 mkdocs_image serve
+    #     var="$(curl localhost:8000 2>/dev/null)" && if echo "$var" | grep 'Welcome to MkDocs'; then   echo "It works"; else fail; fi
