@@ -6,17 +6,19 @@ on:
 
 jobs:
 
-  build:
+  build-test-job:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag mkdocs_image
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+    - name: Docker Build & Push
+      uses: mr-smithers-excellent/docker-build-push@v3.0
+      with:
+        image: krishbharath/mkdocs_image
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
     - name: Display the path and contents
       run: |
         echo $PATH
