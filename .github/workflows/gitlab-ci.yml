@@ -19,17 +19,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Display the path and contents
-      run: |
-        echo $PATH
-        ls -lsa
-      shell: bash
-
-    - name: list containers and images
-      run: |
-        docker images
-        docker ps -a
-
     services:
       mkdocs:
         image: mkdocs_image
