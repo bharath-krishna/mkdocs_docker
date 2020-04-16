@@ -16,13 +16,12 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
-
+    steps:
     - name: Display the path and contents
       run: |
         echo $PATH
         ls -lsa
       shell: bash
-    steps:
 
     - name: list containers and images
       run: |
