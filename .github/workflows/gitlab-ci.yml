@@ -17,6 +17,6 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag mkdocs_image
     - name: Test image
-      run: docker run -d --rm -v ./:/shared_dir -p 8000:8000 mkdocs_image serve
+      run: docker run -d --rm -v $GITHUB_WORKSPACE/mkdocs_docker/:/shared_dir -p 8000:8000 mkdocs_image serve
     - name: Test service
       run: var="$(curl localhost:8000 2>/dev/null)" && if echo "$var" | grep 'Welcome to MkDocs'; then   echo "It works"; else fail; fi
