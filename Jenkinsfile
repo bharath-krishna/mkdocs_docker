@@ -17,9 +17,6 @@ spec:
     command:
       - cat
     tty: true
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-socket
   restartPolicy: "Never"
   securityContext: {}
   volumes:
@@ -43,8 +40,10 @@ spec:
     stage('Run') {
       steps {
         container('python') {
+          git branch: 'jenkins-pipeline', changelog: false, poll: false, url: 'https://github.com/bharath-krishna/mkdocs_docker.git'
           script {
-              sh "pytest -s -v"
+            sh "python3 -m pip install python docker"
+            sh "pytest -s -v"
           }
         }
       }
