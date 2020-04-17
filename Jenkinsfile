@@ -12,6 +12,14 @@ spec:
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket
+  - image: "python:3.7"
+    name: "python"
+    command:
+      - cat
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-socket
   restartPolicy: "Never"
   securityContext: {}
   volumes:
@@ -34,7 +42,7 @@ spec:
     }
     stage('Run') {
       steps {
-        container('docker') {
+        container('python') {
           script {
               sh "pytest -s -v"
           }
