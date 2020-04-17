@@ -4,7 +4,7 @@ pipeline {
       yaml """
 spec:
   containers:
-  - image: "krishbharath/jenkins-slave"
+  - image: "krishbharath/jenkins-slave:triad"
     name: "docker"
     command:
       - cat
@@ -12,11 +12,6 @@ spec:
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket
-  - image: "python:3.7"
-    name: "python"
-    command:
-      - cat
-    tty: true
   restartPolicy: "Never"
   securityContext: {}
   volumes:
@@ -39,10 +34,8 @@ spec:
     }
     stage('Run') {
       steps {
-        container('python') {
-          git branch: 'jenkins-pipeline', changelog: false, poll: false, url: 'https://github.com/bharath-krishna/mkdocs_docker.git'
+        container('docker') {
           script {
-            sh "python3 -m pip install python docker"
             sh "pytest -s -v"
           }
         }
