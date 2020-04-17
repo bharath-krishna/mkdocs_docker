@@ -3,7 +3,7 @@ import docker
 from time import sleep
 
 
-PWDIR_VOL = {"/tests/test_resources"): {"bind": "/shared_dir"}}
+PWDIR_VOL = {"/tests/test_resources": {"bind": "/shared_dir"}}
 
 def test_produce(test_name):
     client = docker.from_env()
