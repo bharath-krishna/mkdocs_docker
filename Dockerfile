@@ -1,7 +1,7 @@
 FROM python:3.7
 
 # Install mkdocs python module
-RUN pip install mkdocs
+RUN pip install mkdocs docker pytest
 
 # Copy project contents to container
 COPY . /
