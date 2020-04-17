@@ -26,13 +26,11 @@ spec:
       steps {
         container('docker') {
           git branch: 'jenkins-pipeline', changelog: false, poll: false, url: 'https://github.com/bharath-krishna/mkdocs_docker.git'
-          script {
-            sh "docker build -t mkdocs_image ."
-          }
         }
       }
     }
-    stage('Run') {
+
+    stage('Test') {
       steps {
         container('docker') {
           script {
@@ -41,5 +39,16 @@ spec:
         }
       }
     }
+
+    stage ("Build") {
+      steps {
+        container('docker') {
+          script {
+            sh "docker build -t mkdocs_image ."
+          }
+        }
+      }
+    }
+
   }
 }
