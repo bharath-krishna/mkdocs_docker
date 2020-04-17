@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml: """
+      yaml """
 spec:
   containers:
   - image: "krishbharath/jenkins-slave"
