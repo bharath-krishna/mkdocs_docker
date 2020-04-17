@@ -25,7 +25,7 @@ def test_serve(test_name, call_api):
             assert "Serving documents using python from compressed docs - /shared_dir/site.tar.gz" in str(cnt.logs())
             # Wait for a while for container to start
             sleep(5)
-            resp, resp_code = call_api(url="http://localhost:8000")
+            resp, resp_code = call_api(url="http://172.17.0.1:8000")
             assert resp_code == 200
             assert "This is a test page" in str(resp)
     except Exception as err:
@@ -41,7 +41,7 @@ def test_run(test_name, call_api):
         assert "Running mkdockerize.sh script" in str(cnt.logs())
         # Wait for a while for container to start
         sleep(5)
-        resp, resp_code = call_api(url="http://localhost:8000")
+        resp, resp_code = call_api(url="http://172.17.0.1:8000")
         assert resp_code == 200
         assert "This is a test page" in str(resp)
     except Exception as err:
