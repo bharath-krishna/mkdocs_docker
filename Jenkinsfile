@@ -68,7 +68,7 @@ spec:
         container('docker') {
           // Create test pod and sleep untill ready and then run tests
           sh """
-            kubectl apply -f mkdocs_test_pod.yaml
+            kubectl apply -f tests/mkdocs_test_pod.yaml
             sleep 60
             pytest tests/test_mkdocs_image.py::test_serve
             pytest tests/test_mkdocs_image.py::test_run
@@ -97,7 +97,7 @@ spec:
           script {
             // Build image only if the above stages succeeds
             sh """
-              kubectl delete -f mkdocs_test_pod.yaml
+              kubectl delete -f tests/mkdocs_test_pod.yaml
             """
           }
         }
