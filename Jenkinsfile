@@ -1,6 +1,8 @@
 pipeline {
   agent {
+    // Using kubernetes cloud to create jenkins agent
     kubernetes {
+      // Pod spec for agent. Agent image created using jenkins-agent.Dockerfile
       yaml """
 spec:
   containers:
@@ -22,9 +24,10 @@ spec:
     }
   }
   stages {
-    stage ("Checkout_and_build") {
+    stage ("Checkout") {
       steps {
         container('docker') {
+          // chekout mkdocs repo
           git branch: 'jenkins-pipeline', changelog: false, poll: false, url: 'https://github.com/bharath-krishna/mkdocs_docker.git'
         }
       }
@@ -34,6 +37,7 @@ spec:
       steps {
         container('docker') {
           script {
+            // Run tests
             sh "pytest -s -v"
           }
         }
@@ -44,6 +48,7 @@ spec:
       steps {
         container('docker') {
           script {
+            // Build image only if the above stages succeeds
             sh "docker build -t mkdocs_image ."
           }
         }
