@@ -11,5 +11,5 @@ WORKDIR /shared_dir
 EXPOSE 8000
 
 # Run default target in makefile when there are no commands passed
-ENTRYPOINT [ "make", "-f", "/Makefile" ]
+ENTRYPOINT [ "make", "-s", "-f", "/Makefile" ]
 CMD [ "default"]
