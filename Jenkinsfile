@@ -7,6 +7,7 @@ pipeline {
 spec:
   containers:
   - image: "krishbharath/jenkins-slave:triad"
+    imagePullPolicy: Always
     name: "docker"
     command:
       - cat
@@ -49,7 +50,13 @@ spec:
         container('docker') {
           script {
             // Build image only if the above stages succeeds
-            sh "docker build -t mkdocs_image ."
+            withCredentials([usernamePassword(credentialsId: 'docker_hub_creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+              sh """
+                docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+                docker build -t krishbharath/mkdocs_image .
+                docker push krishbharath/mkdocs_image
+              """
+            }
           }
         }
       }
