@@ -1,4 +1,0 @@
-site_name: MkDocs_Test
-nav:
-    - Home: index.md
-theme: readthedocs
