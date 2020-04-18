@@ -14,7 +14,7 @@ def test_produce(test_name):
 
 def test_serve(test_name, call_api):
     try:
-        resp, resp_code = call_api(url="http://mkdocs:8000")
+        resp, resp_code = call_api(url="http://mkdocs-serve:8000")
         assert resp_code == 200
         assert "This is a test page" in str(resp)
     except Exception as err:
@@ -23,7 +23,7 @@ def test_serve(test_name, call_api):
 
 def test_run(test_name, call_api):
     try:
-        resp, resp_code = call_api(url="http://mkdocs:8000")
+        resp, resp_code = call_api(url="http://mkdocs-run:8000")
         assert resp_code == 200
         assert "This is a test page" in str(resp)
     except Exception as err:
