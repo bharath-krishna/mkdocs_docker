@@ -68,14 +68,31 @@ spec:
         container('docker') {
           // Create test pod and sleep untill ready and then run tests
           sh """
-            kubectl apply -f tests/mkdocs_test_pod.yaml
+            kubectl apply -f tests/mkdocs_pod_serve.yaml
             sleep 60
             pytest tests/test_mkdocs_image.py::test_serve
-            pytest tests/test_mkdocs_image.py::test_run
+            kubectl delete -f tests/mkdocs_pod_serve.yaml
           """
         }
       }
     }
+
+    stage ("test_run") {
+      steps {
+        container('docker') {
+          // Create test pod and sleep untill ready and then run tests
+          sh """
+            kubectl apply -f tests/mkdocs_pod_run.yaml
+            sleep 60
+            pytest tests/test_mkdocs_image.py::test_run
+            kubectl delete -f tests/mkdocs_pod_run.yaml
+          """
+        }
+      }
+    }
+
+
+
 
     // Push production image if above tests passes
     // stage ("Push") {
@@ -90,19 +107,6 @@ spec:
     //     }
     //   }
     // }
-
-    stage ("CleanUp") {
-      steps {
-        container('docker') {
-          script {
-            // Build image only if the above stages succeeds
-            sh """
-              kubectl delete -f tests/mkdocs_test_pod.yaml
-            """
-          }
-        }
-      }
-    }
 
 
   }
