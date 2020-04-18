@@ -29,7 +29,7 @@ spec:
       steps {
         container('docker') {
           // chekout mkdocs repo
-          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/bharath-krishna/mkdocs_docker.git'
+          checkout scm
         }
       }
     }
