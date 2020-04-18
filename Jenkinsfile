@@ -54,13 +54,36 @@ spec:
               sh """
                 docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
                 docker build -t krishbharath/mkdocs_image .
-                docker push krishbharath/mkdocs_image
               """
             }
           }
         }
       }
     }
+
+    stage ("test_serve") {
+      steps {
+        container('docker') {
+          sh """
+            kubectl run mkdocs --image=krishbharath/mkdocs_image --generator=run-pod/v1 -- serve
+          """          
+        }
+      }
+    }
+
+    stage ("Push") {
+      steps {
+        container('docker') {
+          script {
+            // Build image only if the above stages succeeds
+            sh """
+              docker push krishbharath/mkdocs_image
+            """
+          }
+        }
+      }
+    }
+
 
   }
 }
