@@ -3,14 +3,14 @@ kind: Pod
 metadata:
   creationTimestamp: null
   labels:
-    run: mkdocs
-  name: mkdocs
+    run: mkdocs-run
+  name: mkdocs-run
 spec:
   containers:
   - args:
-    - serve
+    - run
     image: docker.io/krishbharath/mkdocs_image
-    name: mkdocs
+    name: mkdocs-run
     resources: {}
     volumeMounts:
     - mountPath: /shared_dir
@@ -29,15 +29,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    run: mkdocs
-  name: mkdocs
+    run: mkdocs-run
+  name: mkdocs-run
 spec:
   ports:
   - port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    run: mkdocs
+    run: mkdocs-run
   type: NodePort
 status:
   loadBalancer: {}
