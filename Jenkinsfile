@@ -64,20 +64,38 @@ spec:
     stage ("test_serve") {
       steps {
         container('docker') {
+          // Create test pod and sleep untill ready and then run tests
           sh """
-            kubectl run mkdocs --image=krishbharath/mkdocs_image --generator=run-pod/v1 -- serve
-          """          
+            kubectl apply -f mkdocs_test_pod.yaml
+            sleep 60
+            pytest tests/test_mkdocs_image.py::test_serve
+            pytest tests/test_mkdocs_image.py::test_run
+          """
         }
       }
     }
 
-    stage ("Push") {
+    // Push production image if above tests passes
+    // stage ("Push") {
+    //   steps {
+    //     container('docker') {
+    //       script {
+    //         // Build image only if the above stages succeeds
+    //         sh """
+    //           docker push krishbharath/mkdocs_image
+    //         """
+    //       }
+    //     }
+    //   }
+    // }
+
+    stage ("CleanUp") {
       steps {
         container('docker') {
           script {
             // Build image only if the above stages succeeds
             sh """
-              docker push krishbharath/mkdocs_image
+              kubectl delete -f mkdocs_test_pod.yaml
             """
           }
         }
