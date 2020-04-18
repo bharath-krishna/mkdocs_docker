@@ -39,7 +39,9 @@ spec:
         container('docker') {
           script {
             // Run tests
-            sh "pytest -s -v"
+            sh """
+              pytest tests/test_mkdocs_image.py::test_produce
+            """
           }
         }
       }
