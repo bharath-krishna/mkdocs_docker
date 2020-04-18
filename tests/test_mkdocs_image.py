@@ -2,8 +2,8 @@ import subprocess
 import docker
 from time import sleep
 
-
-PWDIR_VOL = {"/tests/test_resources": {"bind": "/shared_dir"}}
+# This path will be replaced with actual docs path by users
+PWDIR_VOL = {"/home/docker/workspace/mkdocs_docker/tests/test_resources/": {"bind": "/shared_dir"}}
 
 def test_produce(test_name):
     client = docker.from_env()
